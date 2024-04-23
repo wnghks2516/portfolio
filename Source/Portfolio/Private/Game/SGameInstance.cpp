@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Game/SGameInstance.h"
@@ -7,5 +7,15 @@
 
 USGameInstance::USGameInstance()
 {
-	UE_LOG(LogTemp, Log, TEXT("°æ°í³ª ¿¡·¯°¡ ¾Æ´Õ´Ï´Ù."));
+	UE_LOG(LogTemp, Log, TEXT("ê²½ê³ ë‚˜ ì—ëŸ¬ê°€ ì•„ë‹™ë‹ˆë‹¤."));
+}
+
+void USGameInstance::Init()
+{
+
+}
+
+void USGameInstance::Shutdown()
+{
+
 }

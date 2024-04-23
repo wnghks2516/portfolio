@@ -16,4 +16,8 @@ class PORTFOLIO_API USGameInstance : public UGameInstance
 	
 public :
 	USGameInstance();
+
+	virtual void Init() override;
+
+	virtual void Shutdown() override;
 };
