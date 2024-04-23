@@ -28,10 +28,7 @@ void USGameInstance::Init()
 	Name = TEXT("USGameInstance 변경된 값");
 
 	//GetDefaultObject을 통해 USGameInstance형변환을 시켜서 Name값을 접근해서 가져온다.
-	//형변환을 통해 요청한 것은 Instance에서 초기화된 내용을 가져온다
-	//아래는 Init()에서 초기화한 내용이 반영된다.
 	UE_LOG(LogTemp, Log, TEXT("USGameInstance Name : %s"), *(GetClass()->GetDefaultObject<USGameInstance>()->Name));
-	
 	UE_LOG(LogTemp, Log, TEXT("USGameInstance Name : %s"), *(Name));
 
 
