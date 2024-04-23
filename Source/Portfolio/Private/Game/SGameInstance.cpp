@@ -3,7 +3,7 @@
 
 #include "Game/SGameInstance.h"
 #include "Kismet/KismetSystemLibrary.h"
-
+#include "SUnrealObjectClass.h"
 
 USGameInstance::USGameInstance()
 {
@@ -18,6 +18,8 @@ void USGameInstance::Init()
 	
 	UE_LOG(LogTemp, Log, TEXT("게임이 시작되었습니다."));
 
+
+	/*
 	UKismetSystemLibrary::PrintString(this, TEXT("프린트 스트링 : 게임이 실행될 때 출력"));
 
 	UClass* RuntimeClassInfo = GetClass();
@@ -33,8 +35,32 @@ void USGameInstance::Init()
 	UE_LOG(LogTemp, Log, TEXT("USGameInstance Name : %s"), *(GetClass()->GetDefaultObject<USGameInstance>()->Name));
 	
 	UE_LOG(LogTemp, Log, TEXT("USGameInstance Name : %s"), *(Name));
+	
+	*/
 
+	//언리얼은 new키워드를 사용하지 않고 NewObject<>()API를 사용한다.
+	//아래줄의 코드는 USUnrealObjectClass를 접근하기 위한 내용
+	USUnrealObjectClass* USobject1 = NewObject<USUnrealObjectClass>();
 
+	//정의한 Getter()
+	
+	UE_LOG(LogTemp, Log, TEXT("USobject Name : %s"), *USobject1->GetName());
+
+	//USUnrealObjectClass에서 name이라는 프로퍼티가 있으면 가져온다.
+	FProperty* NameProperty = USUnrealObjectClass::StaticClass()->FindPropertyByName(TEXT("Name"));
+
+	FString CompiletimeUSObjectName;
+
+	if (nullptr != NameProperty) {
+		NameProperty->GetValue_InContainer(USobject1, &CompiletimeUSObjectName);
+		UE_LOG(LogTemp, Log, TEXT("CompiletimeUSObjectName Name : %s"), *CompiletimeUSObjectName);
+	}
+
+	USobject1->HelloUnreal();
+	UFunction* HelloUnrealFunction = USobject1->GetClass()->FindFunctionByName(TEXT("HelloUnreal"));
+	if (nullptr != HelloUnrealFunction) {
+		USobject1->ProcessEvent(HelloUnrealFunction, nullptr);
+	}
 }
 
 void USGameInstance::Shutdown()
