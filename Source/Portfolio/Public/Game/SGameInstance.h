@@ -14,4 +14,6 @@ class PORTFOLIO_API USGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 	
+public :
+	USGameInstance();
 };

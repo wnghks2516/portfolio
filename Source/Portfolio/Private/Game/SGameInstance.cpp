@@ -3,3 +3,8 @@
 
 #include "Game/SGameInstance.h"
 
+USGameInstance::UGameInstance()
+{
+
+}
+
