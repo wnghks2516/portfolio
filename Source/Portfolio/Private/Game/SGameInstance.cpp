@@ -16,7 +16,7 @@ void USGameInstance::Init()
 	
 	UE_LOG(LogTemp, Log, TEXT("게임이 시작되었습니다."));
 
-
+	UKismetSystemLibrary::PrintString(this, TEXT("프린트 스트링 : 게임이 실행될 때 출력"));
 }
 
 void USGameInstance::Shutdown()
@@ -25,5 +25,5 @@ void USGameInstance::Shutdown()
 
 	UE_LOG(LogTemp, Log, TEXT("게임이 꺼졌습니다."));
 
-	UKismetSystemLibrary::PrintString(this, TEXT("프린트 스트링 : 게임이 꺼졌을 때 출력"));
+	
 }
