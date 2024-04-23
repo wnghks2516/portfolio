@@ -8,6 +8,8 @@
 USGameInstance::USGameInstance()
 {
 	UE_LOG(LogTemp, Log, TEXT("경고나 에러가 아닙니다."));
+
+	Name = TEXT("USGameInstance에서 Name변수값을 설정했습니다");
 }
 
 void USGameInstance::Init()
@@ -17,6 +19,15 @@ void USGameInstance::Init()
 	UE_LOG(LogTemp, Log, TEXT("게임이 시작되었습니다."));
 
 	UKismetSystemLibrary::PrintString(this, TEXT("프린트 스트링 : 게임이 실행될 때 출력"));
+
+	UClass* RuntimeClassInfo = GetClass();
+	UClass* CompleteClassInfo = StaticClass();
+
+	UE_LOG(LogTemp, Log, TEXT("Class Name : %s"),*RuntimeClassInfo->GetName());
+
+
+
+
 }
 
 void USGameInstance::Shutdown()
