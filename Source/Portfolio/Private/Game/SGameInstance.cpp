@@ -2,7 +2,7 @@
 
 
 #include "Game/SGameInstance.h"
-
+#include "Kismet/KismetSystemLibrary.h"
 
 
 USGameInstance::USGameInstance()
@@ -24,4 +24,6 @@ void USGameInstance::Shutdown()
 	Super::Shutdown(); // 엔진 업데이트 루틴을 지키기 위해서, 언리얼 엔지니어가 작성한 코드가 먼저 실행되게끔 하기 위함.
 
 	UE_LOG(LogTemp, Log, TEXT("게임이 꺼졌습니다."));
+
+	UKismetSystemLibrary::PrintString(this, TEXT("프린트 스트링 : 게임이 꺼졌을 때 출력"));
 }
