@@ -25,7 +25,11 @@ void USGameInstance::Init()
 
 	UE_LOG(LogTemp, Log, TEXT("Class Name : %s"),*RuntimeClassInfo->GetName());
 
+	Name = TEXT("USGameInstance 변경된 값");
 
+	//GetDefaultObject을 통해 USGameInstance형변환을 시켜서 Name값을 접근해서 가져온다.
+	UE_LOG(LogTemp, Log, TEXT("USGameInstance Name : %s"), *(GetClass()->GetDefaultObject<USGameInstance>()->Name));
+	UE_LOG(LogTemp, Log, TEXT("USGameInstance Name : %s"), *(Name));
 
 
 }
