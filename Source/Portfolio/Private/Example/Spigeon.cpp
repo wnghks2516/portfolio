@@ -6,6 +6,7 @@
 USpigeon::USpigeon()
 {
 	Name = TEXT("피죤");
+	ID = 0;
 }
 
 void USpigeon::Fly()
