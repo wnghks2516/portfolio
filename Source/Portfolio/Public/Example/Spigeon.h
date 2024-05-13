@@ -20,8 +20,18 @@ public:
 
 	virtual void Fly() override;
 
+	void SetName(const FString& InName) { Name = InName; }
+
+	int32 GetID() const { return ID; }
+
+	void SetID(int32 InID) { ID = InID; }
+
+	virtual void Serialize(FArchive& Ar) override;
+
+
+
 private:
 	UPROPERTY()
-	FString name;
-
+	FString Name;
+	int32 ID;
 };

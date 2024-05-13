@@ -5,10 +5,19 @@
 
 USpigeon::USpigeon()
 {
-	name = TEXT("피죤");
+	Name = TEXT("피죤");
 }
 
 void USpigeon::Fly()
 {
-	UE_LOG(LogTemp, Log, TEXT("%s이 날아오릅니다"), *name);
+	UE_LOG(LogTemp, Log, TEXT("%s이 날아오릅니다"), *Name);
 }
+
+void USpigeon::Serialize(FArchive& Ar)
+{
+	Super::Serialize(Ar);
+
+	Ar << Name;
+	Ar << ID;
+}
+
