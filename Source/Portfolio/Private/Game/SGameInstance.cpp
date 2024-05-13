@@ -6,6 +6,7 @@
 #include "SUnrealObjectClass.h"
 #include "Example/SFlyable.h"
 #include "Example/Spigeon.h"
+#include "JsonObjectConverter.h"
 
 USGameInstance::USGameInstance()
 {
@@ -33,26 +34,33 @@ void USGameInstance::Init()
 	FPaths::MakeStandardFilename(AbsolutePathForRawData);
 	UE_LOG(LogTemp, Log, TEXT("Absolute path for saved file: %s"), *AbsolutePathForRawData);
 
-	FArchive* RawFileWriterAr = IFileManager::Get().CreateFileWriter(*AbsolutePathForRawData);
-	if (nullptr != RawFileWriterAr)
-	{
-		*RawFileWriterAr << SrcRawData;
-		RawFileWriterAr->Close();
-		delete RawFileWriterAr;
-		RawFileWriterAr = nullptr;
-	}
+    const FString JsonDataFileName(TEXT("StudyJsonFile.txt"));
+    FString AbsolutePathForJsonData = FPaths::Combine(*SavedDir, *JsonDataFileName);
+    FPaths::MakeStandardFilename(AbsolutePathForJsonData);
 
-	FBirdData DstRawData;
-	FArchive* RawFileReaderAr = IFileManager::Get().CreateFileReader(*AbsolutePathForRawData);
-	if (nullptr != RawFileReaderAr)
-	{
-		*RawFileReaderAr << DstRawData;
-		RawFileReaderAr->Close();
-		delete RawFileReaderAr;
-		RawFileReaderAr = nullptr;
+    TSharedRef<FJsonObject> SrcJsonObject = MakeShared<FJsonObject>();
+    FJsonObjectConverter::UStructToJsonObject(SerializedPigeon->GetClass(), SerializedPigeon, SrcJsonObject);
 
-		UE_LOG(LogTemp, Log, TEXT("[DstRawData] Name: %s, ID: %d"), *DstRawData.Name, DstRawData.ID);
-	}
+    FString JsonOutString;
+    TSharedRef<TJsonWriter<TCHAR>> JsonWriterAr = TJsonWriterFactory<TCHAR>::Create(&JsonOutString);
+    if (true == FJsonSerializer::Serialize(SrcJsonObject, JsonWriterAr))
+    {
+        FFileHelper::SaveStringToFile(JsonOutString, *AbsolutePathForJsonData);
+    }
+
+    FString JsonInString;
+    FFileHelper::LoadFileToString(JsonInString, *AbsolutePathForJsonData);
+    TSharedRef<TJsonReader<TCHAR>> JsonReaderAr = TJsonReaderFactory<TCHAR>::Create(JsonInString);
+
+    TSharedPtr<FJsonObject> DstJsonObject;
+    if (true == FJsonSerializer::Deserialize(JsonReaderAr, DstJsonObject))
+    {
+        USPigeon* Pigeon78 = NewObject<USPigeon>();
+        if (true == FJsonObjectConverter::JsonObjectToUStruct(DstJsonObject.ToSharedRef(), Pigeon78->GetClass(), Pigeon78))
+        {
+            UE_LOG(LogTemp, Log, TEXT("[Pigeon78] Name: %s, ID: %d"), *Pigeon78->GetName(), Pigeon78->GetID());
+        }
+    }
 }
 
 void USGameInstance::Shutdown()
