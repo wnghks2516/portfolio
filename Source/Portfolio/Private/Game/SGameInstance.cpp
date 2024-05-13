@@ -55,7 +55,7 @@ void USGameInstance::Init()
     TSharedPtr<FJsonObject> DstJsonObject;
     if (true == FJsonSerializer::Deserialize(JsonReaderAr, DstJsonObject))
     {
-        USPigeon* Pigeon78 = NewObject<USPigeon>();
+        USpigeon* Pigeon78 = NewObject<USpigeon>();
         if (true == FJsonObjectConverter::JsonObjectToUStruct(DstJsonObject.ToSharedRef(), Pigeon78->GetClass(), Pigeon78))
         {
             UE_LOG(LogTemp, Log, TEXT("[Pigeon78] Name: %s, ID: %d"), *Pigeon78->GetName(), Pigeon78->GetID());
