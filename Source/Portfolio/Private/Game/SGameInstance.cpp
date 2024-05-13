@@ -20,11 +20,39 @@ void USGameInstance::Init()
 	
 	FBirdData SrcRawData(TEXT("Pigeon17"), 17);
 	UE_LOG(LogTemp, Log, TEXT("[SrcRawData] Name : %s, ID = %d"), *SrcRawData.Name, SrcRawData.ID);
-
+	//간접경로 
 	const FString SavedDir = FPaths::Combine(FPlatformMisc::ProjectDir(), TEXT("Saved"));
 	UE_LOG(LogTemp, Log, TEXT("SavedDir : %s"), *SavedDir);
 
+	//상대경로
+	const FString RawDataFileName(TEXT("RawData.bin"));
+	FString AbsolutePathForRawData = FPaths::Combine(*SavedDir, *RawDataFileName);
+	UE_LOG(LogTemp, Log, TEXT("Relative path for saved file: %s"), *AbsolutePathForRawData);
 
+	//절대경로
+	FPaths::MakeStandardFilename(AbsolutePathForRawData);
+	UE_LOG(LogTemp, Log, TEXT("Absolute path for saved file: %s"), *AbsolutePathForRawData);
+
+	FArchive* RawFileWriterAr = IFileManager::Get().CreateFileWriter(*AbsolutePathForRawData);
+	if (nullptr != RawFileWriterAr)
+	{
+		*RawFileWriterAr << SrcRawData;
+		RawFileWriterAr->Close();
+		delete RawFileWriterAr;
+		RawFileWriterAr = nullptr;
+	}
+
+	FBirdData DstRawData;
+	FArchive* RawFileReaderAr = IFileManager::Get().CreateFileReader(*AbsolutePathForRawData);
+	if (nullptr != RawFileReaderAr)
+	{
+		*RawFileReaderAr << DstRawData;
+		RawFileReaderAr->Close();
+		delete RawFileReaderAr;
+		RawFileReaderAr = nullptr;
+
+		UE_LOG(LogTemp, Log, TEXT("[DstRawData] Name: %s, ID: %d"), *DstRawData.Name, DstRawData.ID);
+	}
 }
 
 void USGameInstance::Shutdown()
